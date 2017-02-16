@@ -29,6 +29,10 @@ init_device_info() {
 	oval=`$UCI_GET easycwmp.@device[0].software_version`
 	[ -n "$val" -a "$val" != "$oval" ] && { $UCI_SET easycwmp.@device[0].software_version="$val"; change=1; }
 	
+	val=`cat /sys/class/net/eth1/address | sed 's/':'//g' | awk '{print toupper($0)}'`
+    	oval=`$UCI_GET easycwmp.@device[0].SerialNumber`
+    	[ -n "$val" -a "$val" != "$oval" ] && { $UCI_SET easycwmp.@device[0].SerialNumber="$val"; change=1; }
+
 	#The same thing here for OUI and SerialNumber
 
 	[ "$change" = "1" ] && $UCI_COMMIT easycwmp
